@@ -3,6 +3,12 @@ library(magrittr)
 library(DT)
 library(shinydashboard)
 library(bit64)
+library(text2vec)
+library(glmnet)
+library(tidyr)
+library(magrittr)
+
+
 default_vars = c("screen_name","text","hashtags","urls_url")
 domaine_cats = c("Protection sociale"="protec_soc","Santé"="sante","Retraite"="retraite","Handicap/Dépendence"="handicap","Jeunesse"="jeunesse","Pauvreté/Précarité"="pauvrete")
 sentiment_cats = c("Référence/argument/citation"="reference","Communication/diffusion"="pub","Critique/inégalité/injustice"="critique","Proposition/suggestion/idée"="proposition")
@@ -13,16 +19,19 @@ tweets=purrr::map(list.files(path_to_tweets),function(nm){
   load(paste0(path_to_tweets,nm))
   tweets_drees
 })
-tweets=do.call("rbind",tweets)
-tweets=unique(tweets)%>%data.table
+tweets=rbindlist(tweets,fill = T)
+tweets$hashtags = unlist(lapply(tweets$hashtags,paste,collapse=" "))
+tweets$urls_url = unlist(lapply(tweets$urls_url,paste,collapse=" "))
+# uniqueN(tweets[,.(status_id,text,hashtags,urls_url)])
 
-suppr = readLines("data/to_remove.txt")
-# tweets[status_id%in%suppr]
-tweets = tweets[!status_id%in%suppr]
+tweets = tweets[,.(status_id,screen_name,text,hashtags,urls_url,
+                   profile_expanded_url,favourites_count,
+                   followers_count,friends_count,statuses_count)]
+tweets = tweets[,.SD[1],by=.(screen_name,text)]
 
-done = fread("data/tagged_tweets.txt")
-names(done) <- c("status_id","domaine","sentiment","statut")
 
-to_do = tweets[!status_id%in%as.character(done$status_id)]
+
+
+source('predict.R')
 
 # tweets[,"text":=iconv(text,to="UTF-8")]

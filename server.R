@@ -1,22 +1,28 @@
 function(input,output,session){
-
   
-  current_tweet = reactiveVal(to_do[sample(nrow(to_do),1)])
+  
+  current_tweet = reactiveVal(tweets[status_id == get_next_tweet()])
   
   observeEvent(input$rm,{
     if(input$rm){
       write(file = "data/to_remove.txt",append = T,x = current_tweet()$status_id)
     }
-    num = sample(nrow(to_do),1)
-    print(num)
-    current_tweet(to_do[num])
+    # num = sample(nrow(to_do),1)
+    # print(num)
+    showModal(modalDialog(title = "Patience, le modèle tourne",HTML('<img src="spinner.gif" class="center"/>'),
+                          footer = NULL,easyClose = T,size = ))
+    current_tweet(tweets[status_id == get_next_tweet()])
+    removeModal()
   })
   
   observeEvent(input$rerun,{
-    num = sample(nrow(to_do),1)
-    print(num)
-    current_tweet(to_do[num])
-  })
+    # num = sample(nrow(to_do),1)
+    # print(num)
+    showModal(modalDialog(title = "Patience, le modèle tourne",HTML('<img src="spinner.gif" class="center"/>'),
+                          footer = NULL,easyClose = T,size = ))
+    current_tweet(tweets[status_id == get_next_tweet()])
+    removeModal()
+    })
   
   observeEvent(input$apply_tags,{
     tag_domaine = paste0(input$tag_domaine,collapse = "/")
@@ -28,10 +34,13 @@ function(input,output,session){
     updateCheckboxGroupInput(session,"tag_domaine",selected = "")
     updateCheckboxGroupInput(session,"tag_sentiment",selected = "")
     updateCheckboxGroupInput(session,"tag_statut",selected = "")
-    num = sample(nrow(to_do),1)
-    print(num)
-    current_tweet(to_do[num])
-  })
+    # num = sample(nrow(to_do),1)
+    # print(num)
+    showModal(modalDialog(title = "Patience, le modèle tourne",HTML('<img src="spinner.gif" class="center"/>'),
+                          footer = NULL,easyClose = T,size = ))
+    current_tweet(tweets[status_id == get_next_tweet()])
+    removeModal()
+    })
   
   output$tweet = renderDT({
     datatable(current_tweet()[,input$vars_to_show,with=F],rownames = FALSE)
