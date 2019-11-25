@@ -23,6 +23,6 @@ tweets = tweets[!status_id%in%suppr]
 done = fread("data/tagged_tweets.txt")
 names(done) <- c("status_id","domaine","sentiment","statut")
 
-tweets = tweets[!status_id%in%as.character(done$status_id)]
+to_do = tweets[!status_id%in%as.character(done$status_id)]
 
 # tweets[,"text":=iconv(text,to="UTF-8")]

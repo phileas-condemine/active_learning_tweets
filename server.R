@@ -1,21 +1,21 @@
 function(input,output,session){
 
   
-  current_tweet = reactiveVal(tweets[sample(nrow(tweets),1)])
+  current_tweet = reactiveVal(to_do[sample(nrow(to_do),1)])
   
   observeEvent(input$rm,{
     if(input$rm){
       write(file = "data/to_remove.txt",append = T,x = current_tweet()$status_id)
     }
-    num = sample(nrow(tweets),1)
+    num = sample(nrow(to_do),1)
     print(num)
-    current_tweet(tweets[num])
+    current_tweet(to_do[num])
   })
   
   observeEvent(input$rerun,{
-    num = sample(nrow(tweets),1)
+    num = sample(nrow(to_do),1)
     print(num)
-    current_tweet(tweets[num])
+    current_tweet(to_do[num])
   })
   
   observeEvent(input$apply_tags,{
@@ -28,9 +28,9 @@ function(input,output,session){
     updateCheckboxGroupInput(session,"tag_domaine",selected = "")
     updateCheckboxGroupInput(session,"tag_sentiment",selected = "")
     updateCheckboxGroupInput(session,"tag_statut",selected = "")
-    num = sample(nrow(tweets),1)
+    num = sample(nrow(to_do),1)
     print(num)
-    current_tweet(tweets[num])
+    current_tweet(to_do[num])
   })
   
   output$tweet = renderDT({

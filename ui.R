@@ -1,7 +1,7 @@
 dashboardPage(
   dashboardHeader(),
   dashboardSidebar(
-    selectInput("vars_to_show","Informations à afficher",choices = names(tweets),multiple = T,selected = default_vars)
+    selectInput("vars_to_show","Informations à afficher",choices = names(to_do),multiple = T,selected = default_vars)
   ),
   dashboardBody(
     fluidRow(
