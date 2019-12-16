@@ -78,3 +78,8 @@
 1184681061982375937;sante;pub;presse
 1171395205091774464;sante;critique;citoyen
 1180001637320069120;handicap;proposition;citoyen
+1205421077737955328;retraite/pauvrete;critique;citoyen
+1154270202403676160;pauvrete;pub;institution
+1181588322679963653;sante;pub/critique;citoyen
+1199066196919881737;sante/pauvrete;critique;association
+1201191812003770368;sante;critique;citoyen

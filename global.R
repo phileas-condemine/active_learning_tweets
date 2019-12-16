@@ -7,7 +7,7 @@ library(text2vec)
 library(glmnet)
 library(tidyr)
 library(magrittr)
-
+library(shinycssloaders)
 
 default_vars = c("screen_name","text","hashtags","urls_url")
 domaine_cats = c("Protection sociale"="protec_soc","Santé"="sante","Retraite"="retraite","Handicap/Dépendence"="handicap","Jeunesse"="jeunesse","Pauvreté/Précarité"="pauvrete")
@@ -32,6 +32,6 @@ tweets = tweets[,.SD[1],by=.(screen_name,text)]
 
 
 
-source('predict.R')
+source('predict.R',local = T)
 
 # tweets[,"text":=iconv(text,to="UTF-8")]
